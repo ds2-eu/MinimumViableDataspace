@@ -24,6 +24,17 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        mavenCentral()
+        maven {
+            url = uri("https://nexus.onesaitplatform.com/nexus/repository/releases/")
+            name = "Indra Public Repository"
+        }
+    }
+}
+
 rootProject.name = "mvd"
 include(":extensions:did-example-resolver")
 include(":extensions:catalog-node-resolver")
