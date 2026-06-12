@@ -1,0 +1,3 @@
+org.eclipse.edc.connector.extension.monitor.TransferMonitorExtension
+org.eclipse.edc.connector.extension.monitor.EnhancedTransferObservableExtension
+org.eclipse.edc.connector.extension.monitor.DataPlaneUpdaterExtension

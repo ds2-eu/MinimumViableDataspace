@@ -124,9 +124,12 @@ resource "kubernetes_config_map" "dataplane-config" {
     EDC_VAULT_HASHICORP_URL                           = var.vault-url
     EDC_VAULT_HASHICORP_TOKEN                         = var.vault-token
     JAVA_TOOL_OPTIONS                                 = "${var.useSVE ? "-XX:UseSVE=0 " : ""}-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${var.ports.debug}"
-    EDC_DATASOURCE_DEFAULT_URL                        = var.database.url
-    EDC_DATASOURCE_DEFAULT_USER                       = var.database.user
-    EDC_DATASOURCE_DEFAULT_PASSWORD                   = var.database.password
+    EDC_DATASOURCE_DEFAULT_URL                        = local.dataplane-database.url
+    EDC_DATASOURCE_DEFAULT_USER                       = local.dataplane-database.user
+    EDC_DATASOURCE_DEFAULT_PASSWORD                   = local.dataplane-database.password
+    EDC_DATASOURCE_CONTROLPLANE_URL                   = var.database.url
+    EDC_DATASOURCE_CONTROLPLANE_USER                  = var.database.user
+    EDC_DATASOURCE_CONTROLPLANE_PASSWORD              = var.database.password
     EDC_SQL_SCHEMA_AUTOCREATE                         = true
 
     # remote STS configuration

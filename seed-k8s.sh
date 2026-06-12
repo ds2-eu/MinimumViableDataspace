@@ -86,7 +86,7 @@ echo
 echo
 echo "Create provider participant context in IdentityHub"
 
-PROVIDER_CONTROLPLANE_SERVICE_URL="http://provider-catalog-server-controlplane:8082"
+PROVIDER_CONTROLPLANE_SERVICE_URL="http://provider-qna-controlplane:8082"
 PROVIDER_IDENTITYHUB_URL="http://provider-identityhub:7082"
 
 DATA_PROVIDER=$(jq -n --arg url "$PROVIDER_CONTROLPLANE_SERVICE_URL" --arg ihurl "$PROVIDER_IDENTITYHUB_URL" '{

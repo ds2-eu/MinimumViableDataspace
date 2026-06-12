@@ -1,0 +1,1818 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MVD",
+    "version": "0.1.0",
+    "description": "Generated from Postman collection (MVD.postman_collection.json)."
+  },
+  "servers": [
+    {
+      "url": "{CONSUMER_CATALOG_QUERY_URL}",
+      "variables": {
+        "CONSUMER_CATALOG_QUERY_URL": {
+          "default": "http://localhost:8084"
+        }
+      }
+    },
+    {
+      "url": "{CS_URL}",
+      "variables": {
+        "CS_URL": {
+          "default": "http://localhost:7082"
+        }
+      }
+    },
+    {
+      "url": "{HOST}",
+      "variables": {
+        "HOST": {
+          "default": "http://localhost:8081"
+        }
+      }
+    },
+    {
+      "url": "{ISSUER_ADMIN_URL}",
+      "variables": {
+        "ISSUER_ADMIN_URL": {
+          "default": "http://localhost:10013"
+        }
+      }
+    },
+    {
+      "url": "{PROVIDER_PUBLIC_API}",
+      "variables": {
+        "PROVIDER_PUBLIC_API": {
+          "default": "http://localhost:12001"
+        }
+      }
+    },
+    {
+      "url": "{baseUrl}",
+      "variables": {
+        "baseUrl": {
+          "default": "http://localhost"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Api-Key"
+      },
+      "PublicAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "paths": {
+    "/api/management/v3/assets": {
+      "post": {
+        "operationId": "create_normal_asset_for_catalogserver",
+        "summary": "Create normal asset for CatalogServer",
+        "tags": ["Seed Catalog Server"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@id": "normal-asset-1",
+                "@type": "Asset",
+                "properties": {
+                  "description": "This is a conventional asset, not a CatalogAsset."
+                },
+                "dataAddress": {
+                  "@type": "DataAddress",
+                  "type": "HttpData",
+                  "baseUrl": "https://jsonplaceholder.typicode.com/todos",
+                  "proxyPath": "true",
+                  "proxyQueryParams": "true"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/policydefinitions": {
+      "post": {
+        "operationId": "create_membership_policy",
+        "summary": "Create Membership Policy",
+        "tags": ["Seed Catalog Server"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "PolicyDefinition",
+                "@id": "require-membership",
+                "policy": {
+                  "@type": "Set",
+                  "permission": [
+                    {
+                      "action": "use",
+                      "constraint": {
+                        "leftOperand": "MembershipCredential",
+                        "operator": "eq",
+                        "rightOperand": "active"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/contractdefinitions": {
+      "post": {
+        "operationId": "create__require_membership__definition",
+        "summary": "Create \"require membership\" definition",
+        "tags": ["Seed Catalog Server"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@id": "membership-required-def",
+                "@type": "ContractDefinition",
+                "accessPolicyId": "require-membership",
+                "contractPolicyId": "require-membership",
+                "assetsSelector": {
+                  "@type": "Criterion",
+                  "operandLeft": "https://w3id.org/edc/v0.0.1/ns/id",
+                  "operator": "in",
+                  "operandRight": [
+                    "linked-asset-provider-qna",
+                    "linked-asset-provider-manufacturing",
+                    "linked-asset-ds2",
+                    "normal-asset-1"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/assets/request": {
+      "post": {
+        "operationId": "get_assets",
+        "summary": "Get Assets",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": {
+                  "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+                },
+                "@type": "QuerySpec"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/catalog/request": {
+      "post": {
+        "operationId": "request_catalog",
+        "summary": "Request Catalog",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "CatalogRequest",
+                "counterPartyAddress": "http://provider-qna-controlplane:8082/api/dsp",
+                "counterPartyId": "did:web:provider-identityhub%3A7083:provider",
+                "protocol": "dataspace-protocol-http",
+                "querySpec": {
+                  "offset": 0,
+                  "limit": 50
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/v1alpha/catalog/query": {
+      "post": {
+        "operationId": "get_cached_catalogs",
+        "summary": "Get Cached Catalogs",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "QuerySpec"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/contractnegotiations": {
+      "post": {
+        "operationId": "initiate_negotiation",
+        "summary": "Initiate negotiation",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "ContractRequest",
+                "counterPartyAddress": "http://provider-qna-controlplane:8082/api/dsp",
+                "counterPartyId": "did:web:provider-identityhub%3A7083:provider",
+                "protocol": "dataspace-protocol-http",
+                "policy": {
+                  "@type": "Offer",
+                  "@id": "",
+                  "assigner": "did:web:provider-identityhub%3A7083:provider",
+                  "assignee": "did:web:consumer-identityhub%3A7083:consumer",
+                  "permission": [],
+                  "prohibition": [],
+                  "obligation": {
+                    "action": "use",
+                    "constraint": {
+                      "leftOperand": "DataAccess.limit",
+                      "operator": "eq",
+                      "rightOperand": "100"
+                    }
+                  },
+                  "target": "asset-1"
+                },
+                "callbackAddresses": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/contractnegotiations/request": {
+      "post": {
+        "operationId": "get_contract_negotiations",
+        "summary": "Get Contract Negotiations",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "QuerySpec"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/transferprocesses": {
+      "post": {
+        "operationId": "initiate_transfer",
+        "summary": "Initiate Transfer",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "assetId": "asset-1",
+                "counterPartyAddress": "http://provider-qna-controlplane:8082/api/dsp",
+                "connectorId": "did:web:provider-identityhub%3A7083:provider",
+                "contractId": "{{CONTRACT_AGREEMENT_ID}}",
+                "dataDestination": {
+                  "type": "HttpData"
+                },
+                "protocol": "dataspace-protocol-http",
+                "transferType": "HttpData-PULL"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/transferprocesses/request": {
+      "post": {
+        "operationId": "get_transfer_processes",
+        "summary": "Get transfer processes",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "QuerySpec"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/edrs/request": {
+      "post": {
+        "operationId": "get_cached_edrs",
+        "summary": "Get cached EDRs",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "@context": [
+                  "https://w3id.org/edc/connector/management/v0.0.1"
+                ],
+                "@type": "QuerySpec"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/management/v3/edrs/{TRANSFER_PROCESS_ID}/dataaddress": {
+      "get": {
+        "operationId": "get_edr_dataaddress_for_transferid",
+        "summary": "Get EDR DataAddress for TransferId",
+        "tags": ["ControlPlane Management"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "TRANSFER_PROCESS_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/public": {
+      "get": {
+        "operationId": "download_data_from_public_api",
+        "summary": "Download Data from Public API",
+        "tags": ["ControlPlane Management"],
+        "security": [
+          {
+            "PublicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}": {
+      "get": {
+        "operationId": "get_participant_by_id",
+        "summary": "Get Participant By ID",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "delete_participant",
+        "summary": "Delete Participant",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/identity/v1alpha/participants": {
+      "get": {
+        "operationId": "get_all_participants",
+        "summary": "Get all participants",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/": {
+      "post": {
+        "operationId": "create_participant__existing_key_",
+        "summary": "Create Participant (existing key)",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "roles": [],
+                "serviceEndpoints": [],
+                "active": true,
+                "participantId": "{{NEW_PARTICIPANT_ID}}",
+                "did": "{{NEW_PARTICIPANT_ID}}",
+                "key": {
+                  "keyId": "key-1",
+                  "privateKeyAlias": "{{NEW_PARTICIPANT_ID}}-alias",
+                  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1l0Lof0a1yBc8KXhesAnoBvxZw5r\noYnkAXuqCYfNK3ex+hMWFuiXGUxHlzShAehR6wvwzV23bbC0tcFcVgW//A==\n-----END PUBLIC KEY-----"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/roles": {
+      "put": {
+        "operationId": "update_roles",
+        "summary": "Update Roles",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array"
+              },
+              "example": ["role1", "role2", "admin"]
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/attestations": {
+      "get": {
+        "operationId": "regenerate_token",
+        "summary": "Regenerate Token",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "participantId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/state": {
+      "post": {
+        "operationId": "deactivate_participant",
+        "summary": "Deactivate Participant",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "isActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "roles": [],
+                "serviceEndpoints": [],
+                "isActive": true,
+                "participantId": "foobar",
+                "did": "did:web:foobar",
+                "key": {
+                  "keyId": "key1",
+                  "privateKeyAlias": "foobar-alias",
+                  "keyGeneratorParams": {
+                    "algorithm": "EC",
+                    "curve": "secp256r1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/BPN0000001/keypairs": {
+      "get": {
+        "operationId": "get_keypair_for_participant",
+        "summary": "Get KeyPair for Participant",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/keypairs": {
+      "get": {
+        "operationId": "get_all_keypairs",
+        "summary": "Get all KeyPairs",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/keypairs": {
+      "put": {
+        "operationId": "add_keypair",
+        "summary": "Add KeyPair",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "keyId": "key6",
+                "privateKeyAlias": "new-foobar-alias5",
+                "keyGeneratorParams": {
+                  "algorithm": "EdDSA",
+                  "curve": "Ed25519"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/keypairs/key1/rotate": {
+      "post": {
+        "operationId": "rotate_key",
+        "summary": "Rotate key",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "keyId": "key2",
+                "privateKeyAlias": "new-foobar-alias",
+                "keyGeneratorParams": {
+                  "algorithm": "EC",
+                  "curve": "secp256r1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/keypairs/key2/revoke": {
+      "post": {
+        "operationId": "revoke_key",
+        "summary": "Revoke key",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/identity/v1alpha/participants/BPN0000001/dids/query": {
+      "post": {
+        "operationId": "query_dids",
+        "summary": "Query DIDs",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/dids": {
+      "get": {
+        "operationId": "get_all_did_documents",
+        "summary": "Get All DID Documents",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/dids/publish": {
+      "post": {
+        "operationId": "publish_did",
+        "summary": "Publish DID",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "did": "did:web:BPN0000001"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/dids/{DID}/endpoints": {
+      "post": {
+        "operationId": "add_endpoint",
+        "summary": "Add endpoint",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "DID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "id": "some-other-id",
+                "type": "CredentialService",
+                "serviceEndpoint": "https://foobar.myconnector.com"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/dids/unpublish": {
+      "post": {
+        "operationId": "un_publish_did",
+        "summary": "Un-Publish DID",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "did": "did:web:consumer-identityhub%3A7083:connector1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/dids": {
+      "delete": {
+        "operationId": "delete_did",
+        "summary": "Delete DID",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/dids/state": {
+      "post": {
+        "operationId": "get_did_document_state",
+        "summary": "Get DID Document state",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "did": "did:web:BPN0000001"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID}/credentials/CREDENTIAL-ID": {
+      "get": {
+        "operationId": "get_credential_by_id",
+        "summary": "Get Credential By ID",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/identity/v1alpha/credentials": {
+      "get": {
+        "operationId": "get_all_credentials",
+        "summary": "Get All Credentials",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/ZGlkOndlYjpsb2NhbGhvc3QlM0E3MDgz/credentials": {
+      "get": {
+        "operationId": "query_credentials_by_type",
+        "summary": "Query Credentials by Type",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID_BASE64}/credentials/request": {
+      "post": {
+        "operationId": "make_credential_request",
+        "summary": "Make Credential Request",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID_BASE64",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "issuerDid": "{{ISSUER_DID}}",
+                "holderPid": "credential-request-1",
+                "credentials": [
+                  {
+                    "format": "VC1_0_JWT",
+                    "credentialType": "FoobarCredential"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/identity/v1alpha/participants/{PARTICIPANT_ID_BASE64}/credentials/request/{REQUEST_ID}": {
+      "get": {
+        "operationId": "get_credential_reqeusts",
+        "summary": "Get Credential Reqeusts",
+        "tags": ["IdentityHub"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "PARTICIPANT_ID_BASE64",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "REQUEST_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/attestations": {
+      "post": {
+        "operationId": "create_attestation_definitions",
+        "summary": "Create attestation definitions",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "attestationType": "demo",
+                "configuration": {},
+                "id": "demo-attestation-def-1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/attestations/query": {
+      "post": {
+        "operationId": "query_attestations",
+        "summary": "query Attestations",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "filterExpression": [
+                  {
+                    "operandLeft": {},
+                    "operandRight": {},
+                    "operator": "<string>"
+                  },
+                  {
+                    "operandLeft": {},
+                    "operandRight": {},
+                    "operator": "<string>"
+                  }
+                ],
+                "limit": "<integer>",
+                "offset": "<integer>",
+                "sortField": "<string>",
+                "sortOrder": "DESC"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentialdefinitions": {
+      "post": {
+        "operationId": "create_credential_definitions",
+        "summary": "Create credential definitions",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "attestations": ["demo-attestation-def-1"],
+                "credentialType": "DemoCredential",
+                "id": "demo-credential-def-1",
+                "jsonSchema": "{}",
+                "jsonSchemaUrl": "https://example.com/schema/demo-credential.json",
+                "mappings": [
+                  {
+                    "input": "participant.name",
+                    "output": "credentialSubject.participant_name",
+                    "required": "true"
+                  }
+                ],
+                "rules": [],
+                "formats": ["VC1_0_JWT"]
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update_credential_definition",
+        "summary": "update Credential Definition",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "attestations": ["<string>", "<string>"],
+                "credentialType": "<string>",
+                "dataModel": "V_2_0",
+                "id": "<string>",
+                "jsonSchema": "<string>",
+                "jsonSchemaUrl": "<string>",
+                "mappings": [
+                  {
+                    "input": "<string>",
+                    "output": "<string>",
+                    "required": "<boolean>"
+                  },
+                  {
+                    "input": "<string>",
+                    "output": "<string>",
+                    "required": "<boolean>"
+                  }
+                ],
+                "rules": [
+                  {
+                    "configuration": {
+                      "addca": {}
+                    },
+                    "type": "<string>"
+                  },
+                  {
+                    "configuration": {
+                      "incididunt_a1f": {}
+                    },
+                    "type": "<string>"
+                  }
+                ],
+                "validity": "<long>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentialdefinitions/query": {
+      "post": {
+        "operationId": "query_credential_definitions",
+        "summary": "query Credential Definitions",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentialdefinitions/{credentialDefinitionId}": {
+      "get": {
+        "operationId": "get_by_id",
+        "summary": "get by ID",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialDefinitionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "delete_credential_definition_by_id",
+        "summary": "delete Credential Definition By Id",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialDefinitionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentials/query": {
+      "post": {
+        "operationId": "query_credentials",
+        "summary": "query Credentials",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentials/{credentialId}/resume": {
+      "post": {
+        "operationId": "resume_credential",
+        "summary": "resume Credential",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentials/{credentialId}/revoke": {
+      "post": {
+        "operationId": "revoke_credential",
+        "summary": "revoke Credential",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentials/{credentialId}/status": {
+      "get": {
+        "operationId": "check_credential_status",
+        "summary": "check Credential Status",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentials/{credentialId}/suspend": {
+      "post": {
+        "operationId": "suspend_credential",
+        "summary": "suspend Credential",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/credentials/{PARTICIPANT_ID}": {
+      "get": {
+        "operationId": "get_credentials",
+        "summary": "get Credentials",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PARTICIPANT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/holders": {
+      "put": {
+        "operationId": "update_participant",
+        "summary": "update Participant",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "did": "<string>",
+                "participantId": "<string>",
+                "name": "<string>"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_provider_participant",
+        "summary": "Create provider participant",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "did": "{{PROVIDER_ID}}",
+                "holderId": "{{PROVIDER_ID}}",
+                "name": "{{PROVIDER_NAME}}"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/holders/query": {
+      "post": {
+        "operationId": "query_participants",
+        "summary": "query Participants",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/holders/{participantId}": {
+      "get": {
+        "operationId": "get_participant_by_id",
+        "summary": "get Participant By Id",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/admin/v1alpha/participants/{ISSUER_CONTEXT_ID}/issuanceprocesses/query": {
+      "post": {
+        "operationId": "query_issuance_processes",
+        "summary": "Query issuance processes",
+        "tags": ["IssuerService"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ISSUER_CONTEXT_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

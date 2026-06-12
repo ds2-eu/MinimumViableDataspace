@@ -70,6 +70,15 @@ variable "database" {
   })
 }
 
+variable "dataplane_database" {
+  type = object({
+    url      = string
+    user     = string
+    password = string
+  })
+  default = null
+}
+
 variable "participant-list-file" {
   type    = string
   default = "./assets/participants/participants.k8s.json"
@@ -112,4 +121,5 @@ locals {
   name                      = lower(var.humanReadableName)
   controlplane-service-name = "${var.humanReadableName}-controlplane"
   dataplane-service-name    = "${var.humanReadableName}-dataplane"
+  dataplane-database        = var.dataplane_database == null ? var.database : var.dataplane_database
 }
