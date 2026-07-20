@@ -42,6 +42,9 @@ include(":extensions:dcp-impl")
 include(":extensions:superuser-seed")
 include(":extensions:data-plane-metrics")
 include(":extensions:transfer-monitor")
+
+include(":extensions:drm-monitoring")
+
 //include(":tests:performance")
 include(":tests:end2end")
 

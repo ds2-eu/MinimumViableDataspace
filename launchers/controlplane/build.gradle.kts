@@ -23,6 +23,9 @@ dependencies {
     runtimeOnly(project(":extensions:dcp-impl")) // some patches/impls for DCP
     runtimeOnly(project(":extensions:catalog-node-resolver")) // to trigger the federated catalog
     runtimeOnly(project(":extensions:transfer-monitor")) // to test the new extention for control plane
+
+    runtimeOnly(project(":extensions:drm-monitoring")) // to log events from the connector to the DRM
+
     runtimeOnly(libs.edc.bom.controlplane)
     runtimeOnly(libs.edc.api.secrets)
 
