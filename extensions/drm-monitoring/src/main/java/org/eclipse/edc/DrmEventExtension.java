@@ -71,6 +71,7 @@ public class DrmEventExtension implements ServiceExtension {
         boolean enabled = context.getSetting(DRM_MONITOR_ENABLED, false);
 
         if (!enabled) {
+            monitor.info(() -> "DRM Event Extension is DISABLED - events from the connector will NOT be sent to the DRM module.");
             LOGGER.info("DRM Event Extension is DISABLED - events from the connector will NOT be sent to the DRM module.");
         } else {
 

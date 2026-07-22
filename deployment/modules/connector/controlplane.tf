@@ -176,6 +176,8 @@ resource "kubernetes_config_map" "connector-config" {
     EDC_DATASOURCE_DEFAULT_USER                = var.database.user
     EDC_DATASOURCE_DEFAULT_PASSWORD            = var.database.password
     EDC_SQL_SCHEMA_AUTOCREATE                  = true
+    EDC_CONTROLPLANE_DRM_MONITOR_ENDPOINT      = ""
+    EDC_CONTROLPLANE_DRM_MONITOR_ENABLED       = "false"
 
     # remote STS configuration
     EDC_IAM_STS_OAUTH_TOKEN_URL           = var.sts-token-url
