@@ -29,8 +29,8 @@ dependencies {
     runtimeOnly(libs.edc.bom.controlplane)
     runtimeOnly(libs.edc.api.secrets)
 
-    implementation("com.minsait.onesait.platform.edc.extensions:ds2-policy-functions:0.0.4-0.14.1")
-    implementation("com.minsait.onesait.platform.edc.extensions:metadata-service:0.0.4-0.14.1")
+    implementation("com.minsait.onesait.platform.edc.extensions:ds2-policy-functions:0.0.6-0.14.1")
+    implementation("com.minsait.onesait.platform.edc.extensions:metadata-service:0.0.6-0.14.1")
 
     if (project.properties.getOrDefault("persistence", "false") == "true") {
         runtimeOnly(libs.edc.vault.hashicorp)
