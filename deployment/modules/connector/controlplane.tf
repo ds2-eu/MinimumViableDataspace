@@ -183,5 +183,11 @@ resource "kubernetes_config_map" "connector-config" {
     EDC_IAM_STS_OAUTH_TOKEN_URL           = var.sts-token-url
     EDC_IAM_STS_OAUTH_CLIENT_ID           = var.participantId
     EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS = "${var.participantId}-sts-client-secret"
+
+    # ds2 configuration
+    DS2_CREDENTIALS_CONSUMER_CREDENTIAL_TYPE            = "ConsumerCredential"
+    DS2_CREDENTIALS_CONSUMER_CREDENTIAL_CLAIM_MEMBER    = "member"
+    DS2_IDENTITYHUB_URL                                 = var.identityhub-url
+    DS2_IDENTITYHUB_API_KEY                             = "c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo="
   }
 }

@@ -28,6 +28,7 @@ module "consumer-connector" {
   namespace     = kubernetes_namespace.ns.metadata.0.name
   sts-token-url = "${module.consumer-identityhub.sts-token-url}/token"
   useSVE        = var.useSVE
+  identityhub-url = "http://consumer-identityhub:7081/api/identity"
 }
 
 # consumer identity hub

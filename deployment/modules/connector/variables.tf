@@ -123,3 +123,8 @@ locals {
   dataplane-service-name    = "${var.humanReadableName}-dataplane"
   dataplane-database        = var.dataplane_database == null ? var.database : var.dataplane_database
 }
+
+variable "identityhub-url" {
+  description = "URL of the identityhub used by the connector"
+  type = string
+}

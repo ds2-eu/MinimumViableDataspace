@@ -29,6 +29,7 @@ module "provider-qna-connector" {
   vault-url     = "http://provider-vault:8200"
   sts-token-url = "${module.provider-identityhub.sts-token-url}/token"
   useSVE        = var.useSVE
+  identityhub-url = "http://provider-identityhub:7081/api/identity"
 }
 
 # Second provider connector "provider-manufacturing"
@@ -45,6 +46,7 @@ module "provider-manufacturing-connector" {
   vault-url     = "http://provider-vault:8200"
   sts-token-url = "${module.provider-identityhub.sts-token-url}/token"
   useSVE        = var.useSVE
+  identityhub-url = "http://provider-identityhub:7081/api/identity"
 }
 
 module "provider-identityhub" {
