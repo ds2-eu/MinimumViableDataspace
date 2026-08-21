@@ -493,6 +493,10 @@ you is to create a Kubernetes port-forwarding:
 kubectl port-forward -n mvd service/consumer-controlplane 1044:1044
 ```
 
+```shell
+kubectl port-forward -n mvd service/provider-qna-controlplane 1044:1044
+```
+
 This assumes the default Kubernetes namespace `mvd`. Note that the port-forward targets a `service` to have it
 consistent across pod restarts, but targeting a specific pod is also possible. Please refer to the official
 documentation for details.
