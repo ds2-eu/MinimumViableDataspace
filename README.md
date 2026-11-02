@@ -357,7 +357,7 @@ All commands are executed from the **repository's root folder** unless stated ot
 ### 5.1 Build the runtime images
 
 ```shell
-./gradlew build
+./gradlew build  # ./gradlew clean build --refresh-dependencies 
 ./gradlew -Ppersistence=true dockerize
 ```
 

@@ -28,6 +28,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         mavenCentral()
+        mavenLocal()
         maven {
             url = uri("https://nexus.onesaitplatform.com/nexus/repository/releases/")
             name = "Indra Public Repository"
